@@ -1,16 +1,10 @@
-import os
-
-from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from app.api import demo
-from app.logging.utils import initLogging
+from src.api import demo
+from src.config import settings
+from src.logging.utils import initLogging
 
-load_dotenv()
-app = FastAPI()
+app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 app_logger = initLogging()
-
-DATABASE_URL = f"""postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}
-@db:5432/{os.getenv('POSTGRES_DB')}"""
 
 app.include_router(demo.router)

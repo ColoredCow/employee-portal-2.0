@@ -7,9 +7,11 @@ name = "pypi"
 fastapi = "0.109.0"
 uvicorn = "0.25.0"
 pydantic = "2.5.3"
-sqlmodel = "0.0.14"
+SQLAlchemy = "2.0.25"
 psycopg2-binary = "2.9.9"
+alembic = "1.13.1"
 python-dotenv = "1.0.0"
+strawberry_graphql = "0.217.1"
 
 [dev-packages]
 pre-commit = "3.6.0"
