@@ -4,6 +4,7 @@
 
 ### Installation Guideline (Docker)
 1. Create a `.env` file by duplicating `.env.example`. Put the values according to your system setup.
+   1. While setting up the DB, make sure to use `db` as the value for POSTGRES_HOST
 2. Create a file to capture logs while development. The file path should be `logs/app.log` inside the project root directory.
 3. You can run you application using a single command:
    ```sh
@@ -13,6 +14,7 @@
 
 ### Installation Guideline (Local)
 1. Create a `.env` file by duplicating `.env.example`. Put the values according to your system setup.
+   1. While setting up the DB, make sure to use `localhost` as the value for POSTGRES_HOST
 2. Create a file to capture logs while development. The file path should be `logs/app.log` inside the project root directory.
 3. Start a virtual environment
    ```sh
