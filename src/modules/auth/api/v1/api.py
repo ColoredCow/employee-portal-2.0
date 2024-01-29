@@ -9,7 +9,9 @@ from src.database.session import get_session
 from src.modules.auth.auth_bearers.auth_bearer_with_cookie import (
     OAuth2PasswordBearerWithCookie,
 )
+from src.modules.auth.models.user import User
 from src.modules.auth.models.user_token import UserToken
+from src.modules.auth.schemas import user as user_schema
 from src.modules.auth.schemas import user_token as token_schema
 from src.modules.auth.utils.utils import (
     create_access_token,
@@ -18,8 +20,6 @@ from src.modules.auth.utils.utils import (
     get_hashed_password,
     verify_password,
 )
-from src.modules.user.models.user import User
-from src.modules.user.schemas import user as user_schema
 
 router = APIRouter()
 
@@ -144,8 +144,7 @@ def regenerate_refresh_token(
 @router.get("/get-users")
 # pylint: disable=unused-argument
 def get_users(
-    request: Request,
-    dependencies=Depends(OAuth2PasswordBearerWithCookie()),
+    request=Depends(OAuth2PasswordBearerWithCookie()),
     db: Session = Depends(get_session),
 ):
     user = db.query(User).all()
