@@ -6,12 +6,31 @@ name = "pypi"
 [packages]
 fastapi = "0.109.0"
 uvicorn = "0.25.0"
-pydantic = "2.5.3"
+
+# Use for validation
+pydantic = {extras = ["email"], version = "2.5.3"}
+
+# Use for database connection
 SQLAlchemy = "2.0.25"
 psycopg2-binary = "2.9.9"
+
+# Used for creating migration
 alembic = "1.13.1"
+
+# Used for reading env variables
 python-dotenv = "1.0.0"
+
+# Used for GraphQL
 strawberry_graphql = "0.217.1"
+
+# Used for authentication
+python-multipart = "0.0.6"
+
+# Used for JWT
+python-jose = "3.3.0"
+
+# Used for handle hashes
+passlib = "1.7.4"
 
 [dev-packages]
 pre-commit = "3.6.0"
