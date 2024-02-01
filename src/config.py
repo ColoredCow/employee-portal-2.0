@@ -22,5 +22,8 @@ class Settings:
     TOKEN_GENERATION_ALGORITHM = "HS256"
     SECRET_KEY = "d9d3f1aaa185b6359a9b071d01c32c36345aceaab39011993fe4806858cbbcf5"
 
+    GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+
 
 settings = Settings()

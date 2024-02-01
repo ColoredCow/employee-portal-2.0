@@ -6,7 +6,7 @@ from fastapi.security import OAuth2
 from sqlalchemy.orm import Session
 
 from src.database.session import get_session
-from src.modules.auth.utils.utils import verify_jwt_token
+from src.modules.auth.utils.utils import verify_google_token, verify_jwt_token
 
 
 class OAuth2PasswordBearerWithCookie(OAuth2):
@@ -26,7 +26,14 @@ class OAuth2PasswordBearerWithCookie(OAuth2):
         self, request: Request, db: Session = Depends(get_session)
     ) -> Optional[str]:
         access_token: str = request.cookies.get("access_token")
-        authorization: bool = verify_jwt_token(db, access_token, "access_token")
+        auth_token: str = request.cookies.get("auth_cookie")
+        authorization: bool = False
+        print(request.cookies)
+        if auth_token:
+            authorization: bool = verify_google_token(db, auth_token)
+
+        if access_token and not authorization:
+            authorization: bool = verify_jwt_token(db, access_token, "access_token")
 
         if not authorization:
             if self.auto_error:

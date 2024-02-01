@@ -7,6 +7,9 @@ name = "pypi"
 fastapi = "0.109.0"
 uvicorn = "0.25.0"
 
+google-auth = "2.27.0"
+google-auth-oauthlib = "1.2.0"
+
 # Use for validation
 pydantic = {extras = ["email"], version = "2.5.3"}
 

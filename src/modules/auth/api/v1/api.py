@@ -1,6 +1,8 @@
 from datetime import datetime
 
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Request, Response, status
+from google.auth.transport import requests
+from google.oauth2 import id_token
 from jose import jwt
 from sqlalchemy.orm import Session
 
@@ -16,8 +18,11 @@ from src.modules.auth.schemas import user_token as token_schema
 from src.modules.auth.utils.utils import (
     create_access_token,
     create_refresh_token,
+    create_user,
     decode_jwt_token,
     get_hashed_password,
+    is_user_exist,
+    store_user_token,
     verify_password,
 )
 
@@ -37,6 +42,13 @@ def register_user(user: user_schema.UserCreate, db: Session = Depends(get_sessio
     encrypted_password = get_hashed_password(user.password)
 
     new_user = User(email=user.email, password=encrypted_password, is_verified=True)
+    new_user = create_user(
+        db,
+        {
+            "email": user.email,
+            "encrypted_password": encrypted_password,
+        },
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -72,39 +84,86 @@ def login(
 
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)
-    token_db = UserToken(
-        user_id=user.id,
-        access_token=access_token,
-        refresh_token=refresh_token,
-        status=True,
+    store_user_token(
+        db,
+        {
+            "user_id": user.id,
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+        },
     )
-    db.add(token_db)
-    db.commit()
-    db.refresh(token_db)
 
     response.set_cookie(
         key="access_token",
         value=access_token,
-        httponly=True,
-        secure=False,
-        samesite="strict",
+        # httponly=True,
+        # secure=False,
+        samesite="none",
         max_age=3600,
-        domain="localhost",
+        # domain="localhost",
     )
     response.set_cookie(
         key="refresh_token",
         value=refresh_token,
-        httponly=True,
-        secure=False,
-        samesite="strict",
+        # httponly=True,
+        # secure=False,
+        samesite="none",
         max_age=3600,
-        domain="localhost",
+        # domain="localhost",
     )
 
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
     }
+
+
+@router.post("/auth/google")
+# pylint: disable=too-many-try-statements
+async def authenticate_google_user(
+    token: user_schema.GoogleLogin,
+    response: Response,
+    db: Session = Depends(get_session),
+):
+    try:
+        user_info = id_token.verify_oauth2_token(
+            token.id_token, requests.Request(), settings.GOOGLE_CLIENT_ID
+        )
+        user_email = user_info.get("email")
+
+        if not user_email.endswith("coloredcow.in"):
+            raise HTTPException(status_code=403, detail="Unauthorized domain")
+
+        user: [bool, User] = is_user_exist(db, user_email)
+        if user is False:
+            user = create_user(
+                db,
+                {
+                    "email": user_email,
+                    "provider": "google",
+                },
+            )
+
+        auth_cookie = jwt.encode(
+            {"email": user_email},
+            settings.SECRET_KEY,
+            algorithm=settings.TOKEN_GENERATION_ALGORITHM,
+        )
+        store_user_token(
+            db, {"user_id": user.id, "access_token": auth_cookie, "refresh_token": None}
+        )
+        response.set_cookie(
+            key="auth_cookie",
+            value=auth_cookie,
+            # samesite="none",
+            max_age=3600,
+        )
+        return {"status": "success", "auth_cookie": auth_cookie}
+    except ValueError as e:
+        return {"status": "error", "message": str(e)}
+
+
+# pylint: enable=too-many-try-statements
 
 
 @router.post("/refresh-token", response_model=token_schema.RefreshTokenResponseSchema)
@@ -199,3 +258,12 @@ def logout(request: Request, db: Session = Depends(get_session)):
     db.commit()
 
     return {"message": "Logout Successfully"}
+
+
+@router.post("/verify-token")
+# pylint: disable=unused-argument
+def verify_token(request=Depends(OAuth2PasswordBearerWithCookie())):
+    return {"message": "User authenticated successfully"}
+
+
+# pylint: enable=unused-argument
