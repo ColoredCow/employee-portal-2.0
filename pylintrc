@@ -99,7 +99,6 @@ enable=
 # --disable=W"
 
 disable=
-    attribute-defined-outside-init,
     invalid-name,
     missing-docstring,
     protected-access,
@@ -109,6 +108,7 @@ disable=
     # We anticipate #3512 where it will become optional
     fixme,
     consider-using-assignment-expr,
+    consider-alternative-union-syntax
 
 
 [REPORTS]

@@ -78,3 +78,4 @@ Whenever you want to make any changes in the DB schema please follow the below p
 
 ### Other Information
 1. Database setup approach - [Link](https://www.fastapitutorial.com/blog/database-connection-fastapi/)
+2. JWT Authentication setup approach (Cookie based)  - [Link 1](https://medium.com/@chnarsimha986/fastapi-login-logout-changepassword-4c12e92d41e2), [Link 2](https://philipokiokio.hashnode.dev/refresh-tokens-user-auth-fastapi), [Link 3](https://www.fastapitutorial.com/blog/fastapi-jwt-httponly-cookie/)
