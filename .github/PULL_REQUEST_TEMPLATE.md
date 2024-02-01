@@ -8,17 +8,6 @@ If there is an open issue, please link to the issue here by replacing [ISSUE_ID]
 Describe your changes or approach in detail. Why these changes are required? What was implemented earlier and what you implemented?
 -->
 
-## Breakdown & Estimates
-<!--
-Please add the action items that you performed and the time they took. For example
-- [ ] Action item 1: 2 - 4 hours
-- [ ] Action item 2: 4 - 8 hours
--->
-
-**Expected Time Range:**
-
-**Actual Time:**
-
 ## Checklist:
 <!--- Mark the checkboxes accordingly. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
