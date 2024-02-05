@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "dd2a4888bf9511b357e60c0dc23124dc2ed075abe5dcde44075a54fcfb51b8cb"
+            "sha256": "0f3eac1879820479ec2c9ee51a72a0dc004bd3c5615e60afddef3c9c6af376af"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -58,11 +58,12 @@
         },
         "fastapi": {
             "hashes": [
-                "sha256:8c77515984cd8e8cfeb58364f8cc7a28f0692088475e2614f7bf03275eba9093",
-                "sha256:b978095b9ee01a5cf49b19f4bc1ac9b8ca83aa076e770ef8fd9af09a2b88d191"
+                "sha256:510042044906b17b6d9149135d90886ade170bf615efcfb5533f568ae6d88534",
+                "sha256:5402389843a3561918634eb327e86b9ae98645a9e7696bede9074449c48d610a"
             ],
             "index": "pypi",
-            "version": "==0.109.0"
+            "markers": "python_version >= '3.8'",
+            "version": "==0.109.1"
         },
         "graphql-core": {
             "hashes": [
@@ -246,6 +247,7 @@
                 "sha256:d0caf5954bee831b6bfe7e338c32b9e30c85dfe080c843680783ac2b631673b4"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.7'",
             "version": "==2.5.3"
         },
         "pydantic-core": {
